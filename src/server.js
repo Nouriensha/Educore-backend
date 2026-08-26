@@ -1,4 +1,7 @@
-const dns = require('node:dns'); dns.setServers(['8.8.8.8', '1.1.1.1']);
+if (process.env.USE_CUSTOM_DNS === 'true') {
+  const dns = require('node:dns');
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+}
 
 const app = require('./app');
 const env = require('./config/env');
