@@ -13,7 +13,8 @@
     "seed:platform-owner": "node scripts/seed-platform-owner.js",
     "seed:admins": "node scripts/seed-admins.js",
     "db:seed:institution": "node scripts/setup-ins-data.js",
-    "test": "npm run syntax"
+    "test": "jest --runInBand --detectOpenHandles",
+    "test:coverage": "jest --coverage --runInBand"
   },
   "engines": {
     "node": ">=20"
@@ -46,6 +47,9 @@
     "uuid": "^14.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "jest": "^30.5.1",
+    "mongodb-memory-server": "^11.2.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.2.2"
   }
 }

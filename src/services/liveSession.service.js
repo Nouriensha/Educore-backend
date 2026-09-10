@@ -306,8 +306,10 @@ const startStatusAutomation = () => {
   });
 };
 
-// Initiate cron on load
-startStatusAutomation();
+// Initiate cron on load (except during test runs)
+if (process.env.NODE_ENV !== 'test') {
+  startStatusAutomation();
+}
 
 module.exports = {
   createSession,
