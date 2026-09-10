@@ -13,7 +13,8 @@
     "seed:platform-owner": "node scripts/seed-platform-owner.js",
     "seed:admins": "node scripts/seed-admins.js",
     "db:seed:institution": "node scripts/setup-ins-data.js",
-    "test": "jest --runInBand --detectOpenHandles",
+    "test": "jest --runInBand",
+    "test:debug": "jest --runInBand --detectOpenHandles",
     "test:coverage": "jest --coverage --runInBand"
   },
   "engines": {
