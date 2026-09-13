@@ -120,7 +120,7 @@ const generateCertificateSynchronously = async (certificateId) => {
 };
 
 // Only initialize BullMQ if we have a real redis URL (not memory or upstash-rest)
-if (env.redis.driver === 'redis' || (env.redis.driver === 'auto' && env.redis.url)) {
+if (process.env.NODE_ENV !== 'test' && (env.redis.driver === 'redis' || (env.redis.driver === 'auto' && env.redis.url))) {
   const connection = new IORedis(env.redis.url, {
     maxRetriesPerRequest: null,
     enableReadyCheck: false

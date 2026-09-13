@@ -245,7 +245,7 @@ const processLiveClassJob = async (type, payload) => {
   }
 };
 
-if (env.redis.driver === 'redis' || (env.redis.driver === 'auto' && env.redis.url)) {
+if (process.env.NODE_ENV !== 'test' && (env.redis.driver === 'redis' || (env.redis.driver === 'auto' && env.redis.url))) {
   const connection = new IORedis(env.redis.url, {
     maxRetriesPerRequest: null,
     enableReadyCheck: false

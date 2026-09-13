@@ -168,11 +168,9 @@ const createDevelopmentFallbackClient = (primary, label) => {
 };
 
 const createRedisClient = () => {
-if (env.redis.useMemory) {
-  console.warn('Using in-memory Redis driver.');
-
-  return createMemoryClient();
-}
+  if (process.env.NODE_ENV === 'test' || env.redis.useMemory) {
+    return createMemoryClient();
+  }
 
   if (env.redis.useUpstashRest) {
     return createDevelopmentFallbackClient(createUpstashRestClient(), 'Upstash Redis');
