@@ -49,4 +49,59 @@ describe('Error Middleware Unit Tests', () => {
       })
     );
   });
+
+  test('errorHandler should normalize Mongoose ValidationError', () => {
+    const validationErr = { name: 'ValidationError', errors: { title: { message: 'Title is required' } } };
+    errorHandler(validationErr, req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        code: 'MONGOOSE_VALIDATION_ERROR'
+      })
+    );
+  });
+
+  test('errorHandler should normalize Mongoose CastError (invalid ObjectId)', () => {
+    const castErr = { name: 'CastError', path: '_id', value: 'invalid_id' };
+    errorHandler(castErr, req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        code: 'INVALID_ID'
+      })
+    );
+  });
+
+  test('errorHandler should normalize MulterError and body entity.too.large error', () => {
+    const multerErr = { name: 'MulterError', message: 'File too large' };
+    errorHandler(multerErr, req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        code: 'UPLOAD_ERROR',
+        message: 'File too large'
+      })
+    );
+
+    res.status.mockClear();
+    res.json.mockClear();
+
+    const bodyTooLargeErr = { type: 'entity.too.large' };
+    errorHandler(bodyTooLargeErr, req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(413);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        code: 'BODY_TOO_LARGE'
+      })
+    );
+  });
 });
+

@@ -64,4 +64,38 @@ describe('Course Model Schema & Validation Unit Tests', () => {
     expect(err.errors.category).toBeDefined();
     expect(err.errors.authorId).toBeDefined();
   });
+
+  test('should fail validation for invalid level enum', async () => {
+    const invalidCourse = new Course({
+      title: 'Invalid Level Course',
+      description: 'Description',
+      category: 'Web Dev',
+      authorId: new mongoose.Types.ObjectId(),
+      level: 'Master'
+    });
+    let err;
+    try {
+      await invalidCourse.save();
+    } catch (error) {
+      err = error;
+    }
+    expect(err).toBeDefined();
+    expect(err.errors.level).toBeDefined();
+  });
+
+  test('should correctly transform to JSON', async () => {
+    const authorId = new mongoose.Types.ObjectId();
+    const course = await new Course({
+      title: 'JSON Course',
+      description: 'Desc',
+      category: 'Web',
+      authorId
+    }).save();
+
+    const json = course.toJSON();
+    expect(json.id).toBeDefined();
+    expect(json._id).toBeUndefined();
+    expect(json.__v).toBeUndefined();
+  });
 });
+

@@ -28,6 +28,10 @@ describe('Enrollment Model Unit Tests', () => {
     expect(saved._id).toBeDefined();
     expect(saved.status).toBe('active');
     expect(saved.progressPercentage).toBe(0);
+
+    const json = saved.toJSON();
+    expect(json.id).toBeDefined();
+    expect(json._id).toBeUndefined();
   });
 
   test('should fail validation when enrollmentType is missing', async () => {

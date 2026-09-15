@@ -33,6 +33,10 @@ describe('Payment Model Unit Tests', () => {
     expect(saved._id).toBeDefined();
     expect(saved.paymentStatus).toBe('success');
     expect(saved.gateway).toBe('razorpay');
+
+    const json = saved.toJSON();
+    expect(json.id).toBeDefined();
+    expect(json._id).toBeUndefined();
   });
 
   test('should fail validation when learnerId, amount, or transactionId are missing', async () => {

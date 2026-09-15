@@ -126,6 +126,14 @@ const createMemoryClient = () => {
       return Math.max(Math.ceil((entry.expiresAt - Date.now()) / 1000), 0);
     },
     ping: async () => 'PONG',
+    flushall: async () => {
+      store.clear();
+      return 'OK';
+    },
+    flushdb: async () => {
+      store.clear();
+      return 'OK';
+    },
     quit: async () => undefined
   };
 };

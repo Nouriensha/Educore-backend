@@ -843,7 +843,7 @@ const getMonitoringStats = async () => {
   completedList.forEach(r => {
     totalTime += (r.updatedAt - r.createdAt);
   });
-  const avgEnrollmentTimeMinutes = completedList.length > 0 ? (totalTime / completedList.length) / 1000 / 60 : 0;
+  const averageEnrollmentTimeMinutes = completedList.length > 0 ? (totalTime / completedList.length) / 1000 / 60 : 0;
 
   return {
     conversionRatePercentage: conversionRate,

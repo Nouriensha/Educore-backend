@@ -59,6 +59,32 @@ describe('User Model Schema & Validation Unit Tests', () => {
     expect(err.code).toBe(11000); // Duplicate key error code in MongoDB
   });
 
+  test('should reject invalid role enum', async () => {
+    const invalidUser = buildUser({ role: 'super_hero' });
+    let err;
+    try {
+      await new User(invalidUser).save();
+    } catch (error) {
+      err = error;
+    }
+    expect(err).toBeDefined();
+    expect(err.errors.role).toBeDefined();
+  });
+
+  test('should apply default notificationSettings and pending_verification status', async () => {
+    const userData = {
+      name: 'Default User',
+      email: 'default@example.com',
+      passwordHash: 'hash123',
+      role: 'learner'
+    };
+    const user = await new User(userData).save();
+
+    expect(user.status).toBe('pending_verification');
+    expect(user.emailVerified).toBe(false);
+    expect(user.notificationSettings.enrollmentConfirmed.email).toBe(true);
+  });
+
   test('should sanitize user object when transformed to JSON (remove passwordHash)', async () => {
     const userData = buildUser({ email: 'sanitized@example.com' });
     const user = await new User(userData).save();
@@ -66,5 +92,8 @@ describe('User Model Schema & Validation Unit Tests', () => {
 
     expect(json.passwordHash).toBeUndefined();
     expect(json.id).toBeDefined();
+    expect(json._id).toBeUndefined();
+    expect(json.__v).toBeUndefined();
   });
 });
+

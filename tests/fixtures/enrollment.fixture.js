@@ -5,6 +5,7 @@ const buildEnrollment = (userId, courseId, overrides = {}) => {
     _id: new mongoose.Types.ObjectId(),
     userId: userId || new mongoose.Types.ObjectId(),
     courseId: courseId || new mongoose.Types.ObjectId(),
+    enrollmentType: 'free',
     status: 'active',
     enrolledAt: new Date(),
     progress: 0,
